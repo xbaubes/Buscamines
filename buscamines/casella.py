@@ -1,5 +1,6 @@
 class Casella:
-    """Representa una casella del taulell del Buscamines"""
+    """Casella del tauler del Buscamines"""
+
     def __init__(self, boto):
         self.boto = boto
         self.te_mina = False
