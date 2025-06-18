@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import PhotoImage
 import os
 
-from config import CONFIG
-from tauler import Tauler
+from config import CONFIGURACIO
+from buscamines import Buscamines
 
 if __name__ == "__main__": # Executa el codi nomes si el fitxer s executa directament, no quan s importa
     
@@ -17,5 +17,5 @@ if __name__ == "__main__": # Executa el codi nomes si el fitxer s executa direct
         icona = PhotoImage(file=ruta_icona)
         root.iconphoto(False, icona)
 
-    Tauler(root, CONFIG)
+    Buscamines(root, CONFIGURACIO)
     root.mainloop()
