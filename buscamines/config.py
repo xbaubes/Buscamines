@@ -16,8 +16,8 @@ CONFIGURACIO = {
     },
     "icona": {
         "bandera": "🚩",
-        "perill": "red",
         "bomba": "💣",
-        "color_bomba": "black",
+        "perill": "red",
+        "defecte": "black"
     }
 }

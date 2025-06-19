@@ -25,9 +25,12 @@ class Buscamines:
                     height=self.configuracio["cella"]["alcada"],
                     font=self.configuracio["cella"]["font"],
                     bg=self.configuracio["cella"]["color"],
-                    cursor=self.configuracio["cella"]["hover"])
-                boto.config(command=lambda i=i, j=j: self.revelar(i, j)) # clic esquerre
-                boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # click dret
+                    cursor=self.configuracio["cella"]["hover"],
+                    fg=self.configuracio["icona"]["defecte"],
+                    activeforeground=self.configuracio["icona"]["defecte"])
+                # Retornant break evita l efecte visual de fer click al boto en cas que no estigui permes
+                boto.bind("<Button-1>", lambda event, i=i, j=j: "break" if self.tauler[i][j].marcada else self.revelar(i, j)) # Click esquerre
+                boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
                 boto.grid(row=i, column=j) # Afegeix el Button al tauler
                 casella = Casella(boto) # Creem una Casella passant el Button com a parametre
                 fila.append(casella) # Afegim la Casella a la fila
@@ -44,10 +47,10 @@ class Buscamines:
 
     def revelar(self, i, j):
         casella = self.tauler[i][j]
-        if not casella.revelada:
+        if not casella.revelada and not casella.marcada:
             if casella.te_mina:
                 casella.boto.config(
-                    fg=self.configuracio["icona"]["color_bomba"],
+                    fg=self.configuracio["icona"]["defecte"],
                     text=self.configuracio["icona"]["bomba"],
                     bg=self.configuracio["icona"]["perill"],
                     relief="sunken"
@@ -56,17 +59,16 @@ class Buscamines:
             else:
                 self.caselles_obertes += 1
                 casella.casella_premuda(self.configuracio)
-        if self.caselles_obertes == self.configuracio["tauler"]["files"] * self.configuracio["tauler"]["columnes"] - self.configuracio["tauler"]["mines"]:
-            self.final_partida("Has guanyat!")
+            if self.caselles_obertes == self.configuracio["tauler"]["files"] * self.configuracio["tauler"]["columnes"] - self.configuracio["tauler"]["mines"]:
+                self.final_partida("Has guanyat!")
 
     def marcar(self, i, j): # Marcar com a possible bomba
         casella = self.tauler[i][j]
         if not casella.revelada:
-            casella.boto.config(
-                text=self.configuracio["icona"]["bandera"],
-                fg=self.configuracio["icona"]["perill"],
-                activeforeground=self.configuracio["icona"]["perill"] # Mentres es prem es mante del mateix color
-            )
+            if casella.marcada:
+                casella.casella_marcar(False, self.configuracio)
+            else:
+                casella.casella_marcar(True, self.configuracio)
 
     def final_partida(self, missatge):
         messagebox.showinfo("Buscamines", missatge)
