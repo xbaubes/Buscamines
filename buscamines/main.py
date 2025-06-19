@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import PhotoImage
+from tkinter import Tk, PhotoImage
 import os
 
 from config import CONFIGURACIO
@@ -7,7 +6,7 @@ from buscamines import Buscamines
 
 if __name__ == "__main__": # Executa el codi nomes si el fitxer s executa directament, no quan s importa
     
-    root = tk.Tk() # Crea finestra principal de l aplicacio amb Tkinter
+    root = Tk() # Crea finestra principal de l aplicacio amb Tkinter
     root.title("Buscamines")
     root.resizable(False, False) # No permet que l'usuari redimensioni la finestra
 

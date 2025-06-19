@@ -6,12 +6,18 @@ CONFIGURACIO = {
         "mines": 8
     },
     "cella": {
-        "amplada": 5,
-        "alcada": 2,
-        # "font_cella": ("Arial", 14),
-        "color": "#e3e3e3",
+        "amplada": 3,
+        "alcada": 1,
+        "font": ("Arial", 14),
+        "color": "#bbbbbb",
         "hover": "hand2",
-        "color_premuda": "red",
+        "color_premuda": "white",
         "hover_premuda": ""
+    },
+    "icona": {
+        "bandera": "🚩",
+        "perill": "red",
+        "bomba": "💣",
+        "color_bomba": "black",
     }
 }
