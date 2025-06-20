@@ -11,6 +11,7 @@ CONFIGURACIO = {
         "font": ("Arial", 14),
         "color": "#bbbbbb",
         "hover": "hand2",
+        "premuda": "sunken",
         "color_premuda": "white",
         "hover_premuda": "",
         "icona": {

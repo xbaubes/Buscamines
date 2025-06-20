@@ -56,7 +56,6 @@ class Buscamines:
         for i in range(files):
             for j in range(columnes):
                 self.tauler[i][j].adjacents = self.comptar_mines_adjacents(i, j, files, columnes)
-                # print(self.tauler[i][j].adjacents)
 
     def comptar_mines_adjacents(self, i, j, files, columnes):
         contador = 0
@@ -72,20 +71,15 @@ class Buscamines:
     def valida_marcat(self, event, i, j):
         if self.tauler[i][j].marcada:
             return "break"
-        self.revelar(i, j)
+        self.revelar(i, j, False)
 
-    def revelar(self, i, j):
+    def revelar(self, i, j, auto): # auto: False si s ha clicat, True si es revela per adjacencia
         casella = self.tauler[i][j]
         files = self.configuracio["tauler"]["files"]
         columnes = self.configuracio["tauler"]["columnes"]
-        if not casella.revelada and not casella.marcada:
+        if not casella.revelada and (not casella.marcada or auto):
             if casella.te_mina:
-                casella.boto.config(
-                    fg=self.configuracio["cella"]["icona"]["defecte"],
-                    text=self.configuracio["cella"]["icona"]["bomba"],
-                    bg=self.configuracio["cella"]["icona"]["perill"],
-                    relief="sunken"
-                )
+                casella.bomba()
                 self.final_partida("Has perdut!")
             else:
                 self.caselles_obertes += 1
@@ -94,7 +88,7 @@ class Buscamines:
                     for x in range(max(0, i-1), min(files, i+2)):
                         for y in range(max(0, j-1), min(columnes, j+2)):
                             if not (x == i and y == j):
-                                self.revelar(x, y)
+                                self.revelar(x, y, True)
             if self.caselles_obertes == files * columnes - self.configuracio["tauler"]["mines"]:
                 self.final_partida("Has guanyat!")
 
@@ -107,6 +101,14 @@ class Buscamines:
                 casella.casella_marcar(True)
 
     def final_partida(self, missatge):
+        files = self.configuracio["tauler"]["files"]
+        columnes = self.configuracio["tauler"]["columnes"]
+        # Mostrem les bombes restants
+        for i in range(files):
+            for j in range(columnes):
+                casella = self.tauler[i][j]
+                if casella.te_mina:
+                    casella.bomba()
         messagebox.showinfo("Buscamines", missatge)
         self.reiniciar()
 
