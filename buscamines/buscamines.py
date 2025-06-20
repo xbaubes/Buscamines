@@ -30,14 +30,14 @@ class Buscamines:
 
     def crear_boto(self, i, j):
         boto = Button(
-                    self.master,
-                    width=self.configuracio["cella"]["amplada"],
-                    height=self.configuracio["cella"]["alcada"],
-                    font=self.configuracio["cella"]["font"],
-                    bg=self.configuracio["cella"]["color"],
-                    cursor=self.configuracio["cella"]["hover"],
-                    fg=self.configuracio["icona"]["defecte"],
-                    activeforeground=self.configuracio["icona"]["defecte"])
+            self.master,
+            width=self.configuracio["cella"]["amplada"],
+            height=self.configuracio["cella"]["alcada"],
+            font=self.configuracio["cella"]["font"],
+            bg=self.configuracio["cella"]["color"],
+            cursor=self.configuracio["cella"]["hover"],
+            fg=self.configuracio["icona"]["defecte"],
+            activeforeground=self.configuracio["icona"]["defecte"])
         boto.bind("<Button-1>", lambda event, i=i, j=j: self.valida_marcat(event, i, j)) # Click esquerre
         boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
         boto.grid(row=i, column=j) # Afegeix el Button al tauler
@@ -87,7 +87,12 @@ class Buscamines:
                 self.final_partida("Has perdut!")
             else:
                 self.caselles_obertes += 1
-                casella.casella_premuda(self.configuracio)
+                casella.casella_premuda(self.configuracio, i, j)
+                if casella.adjacents == 0:
+                    for x in range(max(0, i-1), min(self.configuracio["tauler"]["files"], i+2)):
+                        for y in range(max(0, j-1), min(self.configuracio["tauler"]["columnes"], j+2)):
+                            if not (x == i and y == j):
+                                self.revelar(x, y)
             if self.caselles_obertes == self.configuracio["tauler"]["files"] * self.configuracio["tauler"]["columnes"] - self.configuracio["tauler"]["mines"]:
                 self.final_partida("Has guanyat!")
 

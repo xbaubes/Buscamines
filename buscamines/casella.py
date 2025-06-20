@@ -10,7 +10,7 @@ class Casella:
         self.marcada = False
         self.adjacents = 0
 
-    def casella_premuda(self, configuracio):
+    def casella_premuda(self, configuracio, i, j):
         self.revelada = True
         self.boto.config(
             text=self.adjacents,
