@@ -8,11 +8,12 @@ class Casella:
         self.te_mina = False
         self.revelada = False
         self.marcada = False
+        self.adjacents = 0
 
     def casella_premuda(self, configuracio):
         self.revelada = True
         self.boto.config(
-            text="",
+            text=self.adjacents,
             relief="sunken",
             state="disabled",
             bg=configuracio["cella"]["color_premuda"],

@@ -16,9 +16,11 @@ class Buscamines:
         self.crear_tauler()
 
     def crear_tauler(self):
-        for i in range(self.configuracio["tauler"]["files"]):
+        files = self.configuracio["tauler"]["files"]
+        columnes = self.configuracio["tauler"]["columnes"]
+        for i in range(files):
             fila = []
-            for j in range(self.configuracio["tauler"]["columnes"]):
+            for j in range(columnes):
                 boto = Button( # Creem el Button
                     self.master,
                     width=self.configuracio["cella"]["amplada"],
@@ -28,14 +30,14 @@ class Buscamines:
                     cursor=self.configuracio["cella"]["hover"],
                     fg=self.configuracio["icona"]["defecte"],
                     activeforeground=self.configuracio["icona"]["defecte"])
-                # Retornant break evita l efecte visual de fer click al boto en cas que no estigui permes
-                boto.bind("<Button-1>", lambda event, i=i, j=j: "break" if self.tauler[i][j].marcada else self.revelar(i, j)) # Click esquerre
+                boto.bind("<Button-1>", lambda event, i=i, j=j: self.valida_marcat(event, i, j)) # Click esquerre
                 boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
                 boto.grid(row=i, column=j) # Afegeix el Button al tauler
                 casella = Casella(boto) # Creem una Casella passant el Button com a parametre
                 fila.append(casella) # Afegim la Casella a la fila
             self.tauler.append(fila) # Afegim la fila al tauler
         self.posar_mines()
+        self.calcular_adjacents()
 
     def posar_mines(self):
         # Generem tantes posicions com numero de bombes requerides, les posicions tenen un valor entre 0 i el nombre de botons que permet la mida del tauler
@@ -44,6 +46,30 @@ class Buscamines:
             i, j = divmod(pos, self.configuracio["tauler"]["columnes"]) # Convertim les posicions en coordenades i,j (fila,columna)
             self.tauler[i][j].te_mina = True
             self.tauler[i][j].boto.config(bg="blue") # provisional: canvio color cella amb bomba
+
+    def calcular_adjacents(self):
+        files = self.configuracio["tauler"]["files"]
+        columnes = self.configuracio["tauler"]["columnes"]
+        for i in range(files):
+            for j in range(columnes):
+                self.tauler[i][j].adjacents = self.comptar_mines_adjacents(i, j, files, columnes)
+                # print(self.tauler[i][j].adjacents)
+
+    def comptar_mines_adjacents(self, i, j, files, columnes):
+        contador = 0
+        for x in range(i - 1, i + 2):
+            for y in range(j - 1, j + 2):
+                if not (x == i and y == j):  # No contem la casella de la que calculem els adjacents
+                    if 0 <= x < files and 0 <= y < columnes:
+                        if self.tauler[x][y].te_mina:
+                            contador += 1
+        return contador
+
+    # Retornant break evita l efecte visual de fer click al boto en cas que no estigui permes
+    def valida_marcat(self, event, i, j):
+        if self.tauler[i][j].marcada:
+            return "break"
+        self.revelar(i, j)
 
     def revelar(self, i, j):
         casella = self.tauler[i][j]
