@@ -1,8 +1,12 @@
-from tkinter import Button, messagebox
+import tkinter as tk
+from tkinter import Button, messagebox, simpledialog
 import random
+import time
+import requests
 from typing import List
 
 from casella import Casella
+from api import url
 
 class Buscamines:
     """Classe que crea i gestiona el tauler del joc Buscamines.
@@ -13,6 +17,7 @@ class Buscamines:
         self.configuracio = configuracio
         self.tauler: List[List[Casella]] = [] # Indiquem el tipus de l atribut tauler
         self.caselles_obertes = 0
+        self.inici_partida = None
         self.crear_tauler()
 
     def crear_tauler(self):
@@ -79,13 +84,13 @@ class Buscamines:
         self.revelar(i, j)
 
     def revelar(self, i, j, per_adjacencia=False): # 'per_adjacencia': False si s ha clicat, True si es revela per adjacencia
+        if self.inici_partida == None:
+            self.inici_partida = time.time() # Inicio el cronometre
         casella = self.tauler[i][j]
-        files = self.configuracio["tauler"]["files"]
-        columnes = self.configuracio["tauler"]["columnes"]
         if not casella.revelada and (not casella.marcada or per_adjacencia):
             if casella.te_mina:
                 casella.bomba()
-                self.final_partida("Has perdut!")
+                self.final_partida(False)
             else:
                 self.caselles_obertes += 1
                 casella.casella_premuda(i, j)
@@ -93,7 +98,7 @@ class Buscamines:
                     for x, y in self.adjacents(i, j):
                         self.revelar(x, y, True)
             if self.caselles_obertes == self.caselles_sense_bomba():
-                self.final_partida("Has guanyat!")
+                self.final_partida(True)
 
     def marcar(self, i, j): # Marcar com a possible bomba
         casella = self.tauler[i][j]
@@ -103,7 +108,7 @@ class Buscamines:
             else:
                 casella.casella_marcar(True)
 
-    def final_partida(self, missatge):
+    def final_partida(self, victoria):
         files = self.configuracio["tauler"]["files"]
         columnes = self.configuracio["tauler"]["columnes"]
         # Mostrem les bombes restants
@@ -112,10 +117,56 @@ class Buscamines:
                 casella = self.tauler[i][j]
                 if casella.te_mina:
                     casella.bomba()
-        messagebox.showinfo("Buscamines", missatge)
+        if victoria: # TO DO : definir mida pantalla i limitar a 10 caracters !!!!!
+            durada = round(time.time() - self.inici_partida,2)
+            nom = simpledialog.askstring("Felicitats!", f"Has guanyat en {durada} segons!\nIntrodueix el teu nom:")
+            if nom:  # Si ha escrit algun nom guardem
+                self.registrar_temps(nom, durada)
+        else:
+            missatge="Has perdut!"
+            messagebox.showinfo("Buscamines", missatge)
         self.reiniciar()
+
+    def registrar_temps(self, nom, temps):
+        # Dades a afegir, camps "jugador" i "temps"
+        dades = {
+            "data": {
+                "jugador": nom,
+                "temps": str(temps).replace(",", ".")
+            }
+        }
+        # Fer la petició POST
+        resposta = requests.post(url, json=dades)
+        # Mostrar resultat
+        self.resultats()
+
+    def resultats(self):
+        resposta = requests.get(url)
+
+        if resposta.status_code == 200:
+            dades = resposta.json()
+
+            # Filtra per registres amb temps i ordena per temps ascendent
+            dades_valides = [f for f in dades if f.get("temps") and f["temps"].replace(".", "", 1).isdigit()]
+            dades_ordenades = sorted(dades_valides, key=lambda fila: float(fila["temps"]))
+
+            # Crear finestra
+            finestra = tk.Toplevel()
+            finestra.title("Millors temps")
+            finestra.geometry("300x250")
+            finestra.resizable(False, False)
+
+            tk.Label(finestra, text="🏆 Rànquing dels 10 millors temps", font=("Arial", 12, "bold")).pack(pady=10)
+
+            # Top 10
+            for idx, fila in enumerate(dades_ordenades[:10], start=1):
+                jugador = fila.get("jugador", "Anònim")
+                temps = fila.get("temps")
+                text = f"{idx}. {jugador} - {temps} s"
+                tk.Label(finestra, text=text, font=("Arial", 10)).pack(anchor="w", padx=20)
 
     def reiniciar(self): # Elimina la partida actual i preparar ne una de nova
         self.tauler.clear()
         self.caselles_obertes = 0
+        self.inici_partida = None
         self.crear_tauler()
