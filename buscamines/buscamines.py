@@ -21,7 +21,15 @@ class Buscamines:
         for i in range(files):
             fila = []
             for j in range(columnes):
-                boto = Button( # Creem el Button
+                boto = self.crear_boto(i, j)
+                casella = Casella(boto) # Creem una Casella passant el Button com a parametre
+                fila.append(casella) # Afegim la Casella a la fila
+            self.tauler.append(fila) # Afegim la fila al tauler
+        self.posar_mines()
+        self.calcular_adjacents()
+
+    def crear_boto(self, i, j):
+        boto = Button(
                     self.master,
                     width=self.configuracio["cella"]["amplada"],
                     height=self.configuracio["cella"]["alcada"],
@@ -30,14 +38,10 @@ class Buscamines:
                     cursor=self.configuracio["cella"]["hover"],
                     fg=self.configuracio["icona"]["defecte"],
                     activeforeground=self.configuracio["icona"]["defecte"])
-                boto.bind("<Button-1>", lambda event, i=i, j=j: self.valida_marcat(event, i, j)) # Click esquerre
-                boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
-                boto.grid(row=i, column=j) # Afegeix el Button al tauler
-                casella = Casella(boto) # Creem una Casella passant el Button com a parametre
-                fila.append(casella) # Afegim la Casella a la fila
-            self.tauler.append(fila) # Afegim la fila al tauler
-        self.posar_mines()
-        self.calcular_adjacents()
+        boto.bind("<Button-1>", lambda event, i=i, j=j: self.valida_marcat(event, i, j)) # Click esquerre
+        boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
+        boto.grid(row=i, column=j) # Afegeix el Button al tauler
+        return boto
 
     def posar_mines(self):
         # Generem tantes posicions com numero de bombes requerides, les posicions tenen un valor entre 0 i el nombre de botons que permet la mida del tauler
@@ -45,7 +49,6 @@ class Buscamines:
         for pos in posicions:
             i, j = divmod(pos, self.configuracio["tauler"]["columnes"]) # Convertim les posicions en coordenades i,j (fila,columna)
             self.tauler[i][j].te_mina = True
-            self.tauler[i][j].boto.config(bg="blue") # provisional: canvio color cella amb bomba
 
     def calcular_adjacents(self):
         files = self.configuracio["tauler"]["files"]
