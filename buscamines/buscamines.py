@@ -22,7 +22,7 @@ class Buscamines:
             fila = []
             for j in range(columnes):
                 boto = self.crear_boto(i, j)
-                casella = Casella(boto) # Creem una Casella passant el Button com a parametre
+                casella = Casella(boto, self.configuracio) # Creem una Casella passant el Button com a parametre
                 fila.append(casella) # Afegim la Casella a la fila
             self.tauler.append(fila) # Afegim la fila al tauler
         self.posar_mines()
@@ -76,6 +76,8 @@ class Buscamines:
 
     def revelar(self, i, j):
         casella = self.tauler[i][j]
+        files = self.configuracio["tauler"]["files"]
+        columnes = self.configuracio["tauler"]["columnes"]
         if not casella.revelada and not casella.marcada:
             if casella.te_mina:
                 casella.boto.config(
@@ -87,22 +89,22 @@ class Buscamines:
                 self.final_partida("Has perdut!")
             else:
                 self.caselles_obertes += 1
-                casella.casella_premuda(self.configuracio, i, j)
+                casella.casella_premuda(i, j)
                 if casella.adjacents == 0:
-                    for x in range(max(0, i-1), min(self.configuracio["tauler"]["files"], i+2)):
-                        for y in range(max(0, j-1), min(self.configuracio["tauler"]["columnes"], j+2)):
+                    for x in range(max(0, i-1), min(files, i+2)):
+                        for y in range(max(0, j-1), min(columnes, j+2)):
                             if not (x == i and y == j):
                                 self.revelar(x, y)
-            if self.caselles_obertes == self.configuracio["tauler"]["files"] * self.configuracio["tauler"]["columnes"] - self.configuracio["tauler"]["mines"]:
+            if self.caselles_obertes == files * columnes - self.configuracio["tauler"]["mines"]:
                 self.final_partida("Has guanyat!")
 
     def marcar(self, i, j): # Marcar com a possible bomba
         casella = self.tauler[i][j]
         if not casella.revelada:
             if casella.marcada:
-                casella.casella_marcar(False, self.configuracio)
+                casella.casella_marcar(False)
             else:
-                casella.casella_marcar(True, self.configuracio)
+                casella.casella_marcar(True)
 
     def final_partida(self, missatge):
         messagebox.showinfo("Buscamines", missatge)
