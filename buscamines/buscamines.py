@@ -22,7 +22,7 @@ class Buscamines:
             fila = []
             for j in range(columnes):
                 boto = self.crear_boto(i, j)
-                casella = Casella(boto, self.configuracio) # Creem una Casella passant el Button com a parametre
+                casella = Casella(boto, self.configuracio["cella"]) # Creem una Casella passant el Button com a parametre
                 fila.append(casella) # Afegim la Casella a la fila
             self.tauler.append(fila) # Afegim la fila al tauler
         self.posar_mines()
@@ -36,8 +36,8 @@ class Buscamines:
             font=self.configuracio["cella"]["font"],
             bg=self.configuracio["cella"]["color"],
             cursor=self.configuracio["cella"]["hover"],
-            fg=self.configuracio["icona"]["defecte"],
-            activeforeground=self.configuracio["icona"]["defecte"])
+            fg=self.configuracio["cella"]["icona"]["defecte"],
+            activeforeground=self.configuracio["cella"]["icona"]["defecte"])
         boto.bind("<Button-1>", lambda event, i=i, j=j: self.valida_marcat(event, i, j)) # Click esquerre
         boto.bind("<Button-3>", lambda event, i=i, j=j: self.marcar(i, j)) # Click dret
         boto.grid(row=i, column=j) # Afegeix el Button al tauler
@@ -81,9 +81,9 @@ class Buscamines:
         if not casella.revelada and not casella.marcada:
             if casella.te_mina:
                 casella.boto.config(
-                    fg=self.configuracio["icona"]["defecte"],
-                    text=self.configuracio["icona"]["bomba"],
-                    bg=self.configuracio["icona"]["perill"],
+                    fg=self.configuracio["cella"]["icona"]["defecte"],
+                    text=self.configuracio["cella"]["icona"]["bomba"],
+                    bg=self.configuracio["cella"]["icona"]["perill"],
                     relief="sunken"
                 )
                 self.final_partida("Has perdut!")

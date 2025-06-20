@@ -12,12 +12,12 @@ CONFIGURACIO = {
         "color": "#bbbbbb",
         "hover": "hand2",
         "color_premuda": "white",
-        "hover_premuda": ""
-    },
-    "icona": {
-        "bandera": "🚩",
-        "bomba": "💣",
-        "perill": "red",
-        "defecte": "black"
+        "hover_premuda": "",
+        "icona": {
+            "bandera": "🚩",
+            "bomba": "💣",
+            "perill": "red",
+            "defecte": "black"
+        }
     }
 }
