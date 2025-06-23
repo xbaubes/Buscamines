@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import Button, messagebox, simpledialog
+from datetime import datetime
 import random
 import time
 import requests
@@ -153,11 +154,12 @@ class Buscamines:
         self.reiniciar()
 
     def registrar_temps(self, nom, temps):
-        # Dades a afegir, camps "jugador" i "temps"
+        # Dades a afegir, camps "jugador", "temps" i "data_hora"
         dades = {
             "data": {
                 "jugador": nom,
-                "temps": str(temps).replace(",", ".")
+                "temps": str(temps).replace(",", "."),
+                "data_hora": datetime.now().strftime("%d-%m-%Y - %H:%M:%S")
             }
         }
         # Fer la petició POST
