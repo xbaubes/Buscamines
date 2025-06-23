@@ -192,7 +192,7 @@ class Buscamines:
             "data": {
                 "jugador": nom,
                 "temps": str(temps).replace(",", "."),
-                "data_hora": datetime.now().strftime("%d-%m-%Y - %H:%M:%S")
+                "data_hora": datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
             }
         }
         # Fer la petició POST
