@@ -133,6 +133,40 @@ class Buscamines:
             self.actualitzar_etiqueta_temps(temps)
             self.master.after(100, self.actualitzar_temps) # Torna a cridar se cada 100 ms
 
+    def demanar_info(self, durada):
+        finestra = tk.Toplevel()
+        finestra.title("Felicitats!")
+        finestra.geometry("300x130")
+        finestra.resizable(False, False)
+
+        def en_tancar():
+            self.reiniciar()
+            finestra.destroy()
+
+        finestra.protocol("WM_DELETE_WINDOW", en_tancar)
+
+        tk.Label(finestra, text=f"Has guanyat en {durada} segons!", font=("Arial", 11)).pack(pady=5)
+        tk.Label(finestra, text="Introdueix el teu nom (màx. 15 caràcters):", font=("Arial", 10)).pack()
+
+        # Funció de validació per limitar a 15 caracters
+        def validar_input(nou_text):
+            return len(nou_text) <= 15
+
+        vcmd = (finestra.register(validar_input), "%P")
+
+        entrada = tk.Entry(finestra, font=("Arial", 10), validate="key", validatecommand=vcmd)
+        entrada.pack(pady=5)
+        entrada.focus()
+
+        def enviar():
+            nom = entrada.get().strip()
+            self.registrar_temps(nom, durada)
+            finestra.destroy()
+            self.reiniciar()
+
+        tk.Button(finestra, text="Desar", command=enviar).pack(pady=5)
+        finestra.grab_set()
+
     def final_partida(self, victoria):
         files = self.configuracio["tauler"]["files"]
         columnes = self.configuracio["tauler"]["columnes"]
@@ -143,17 +177,16 @@ class Buscamines:
                 casella = self.tauler[i][j]
                 if casella.te_mina:
                     casella.bomba()
-        if victoria: # TO DO : definir mida pantalla i limitar a 10 caracters !!!!!
-            durada = self.text_temps
-            nom = simpledialog.askstring("Felicitats!", f"Has guanyat en {durada} segons!\nIntrodueix el teu nom:")
-            if nom:  # Si ha escrit algun nom guardem
-                self.registrar_temps(nom, durada)
+        if victoria:
+            self.demanar_info(self.text_temps)
         else:
             missatge="Has perdut!"
             messagebox.showinfo("Buscamines", missatge)
-        self.reiniciar()
+            self.reiniciar()
 
     def registrar_temps(self, nom, temps):
+        # Si nom buit o nomes espais posem "Jugador misteriós"
+        nom = nom.strip() or "Jugador misteriós"
         # Dades a afegir, camps "jugador", "temps" i "data_hora"
         dades = {
             "data": {
@@ -180,10 +213,9 @@ class Buscamines:
             # Crear finestra
             finestra = tk.Toplevel()
             finestra.title("Millors temps")
-            finestra.geometry("300x250")
+            finestra.geometry("300x300")
             finestra.resizable(False, False)
-
-            tk.Label(finestra, text="🏆 Rànquing dels 10 millors temps", font=("Arial", 12, "bold")).pack(pady=10)
+            tk.Label(finestra, text="🏆    TOP 10    🏆", font=("Arial", 12, "bold")).pack(pady=10)
 
             # Top 10
             for idx, fila in enumerate(dades_ordenades[:10], start=1):
