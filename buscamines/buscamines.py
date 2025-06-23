@@ -93,7 +93,7 @@ class Buscamines:
         self.revelar(i, j)
 
     def revelar(self, i, j, per_adjacencia=False): # 'per_adjacencia': False si s ha clicat, True si es revela per adjacencia
-        if self.inici_partida is None:
+        if self.inici_partida is None and not self.partida_finalitzada:
             self.inici_partida = time.time() # Inicio el cronometre
             self.actualitzar_temps()
         casella = self.tauler[i][j]
