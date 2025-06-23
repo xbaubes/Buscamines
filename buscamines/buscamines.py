@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Button, messagebox, simpledialog
+from tkinter import Button, messagebox
 from datetime import datetime
 import random
 import time
