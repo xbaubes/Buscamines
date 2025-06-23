@@ -18,6 +18,12 @@ class Buscamines:
         self.tauler: List[List[Casella]] = [] # Indiquem el tipus de l atribut tauler
         self.caselles_obertes = 0
         self.inici_partida = None
+        self.text_prefix = "Temps: "
+        self.text_suffix = " s"
+        self.temps_parat = 0.00
+        self.etiqueta_temps = tk.Label(self.master,
+                                       text=f"{self.text_prefix}{self.temps_parat:.2f}{self.text_suffix}",
+                                       font=("Arial", 12))
         self.crear_tauler()
 
     def crear_tauler(self):
@@ -30,6 +36,7 @@ class Buscamines:
                 casella = Casella(boto, self.configuracio["cella"]) # Creem una Casella passant el Button com a parametre
                 fila.append(casella) # Afegim la Casella a la fila
             self.tauler.append(fila) # Afegim la fila al tauler
+            self.etiqueta_temps.grid(row=self.configuracio["tauler"]["files"], column=0, columnspan=self.configuracio["tauler"]["columnes"], pady=5)
         self.posar_mines()
         self.calcular_adjacents()
 
@@ -84,8 +91,9 @@ class Buscamines:
         self.revelar(i, j)
 
     def revelar(self, i, j, per_adjacencia=False): # 'per_adjacencia': False si s ha clicat, True si es revela per adjacencia
-        if self.inici_partida == None:
+        if self.inici_partida is None:
             self.inici_partida = time.time() # Inicio el cronometre
+            self.actualitzar_temps()
         casella = self.tauler[i][j]
         if not casella.revelada and (not casella.marcada or per_adjacencia):
             if casella.te_mina:
@@ -108,9 +116,26 @@ class Buscamines:
             else:
                 casella.casella_marcar(True)
 
+    def actualitzar_etiqueta_temps(self, temps):
+        self.text_temps = f"{temps:.2f}"
+        self.etiqueta_temps.config(text=self.text_prefix + self.text_temps + self.text_suffix)
+
+    def obtenir_temps(self) -> float:
+        if self.inici_partida is None:
+            return self.temps_parat
+        else:
+            return round((time.time() - self.inici_partida), 2)
+
+    def actualitzar_temps(self):
+        if self.inici_partida is not None:
+            temps = self.obtenir_temps()
+            self.actualitzar_etiqueta_temps(temps)
+            self.master.after(100, self.actualitzar_temps) # Torna a cridar se cada 100 ms
+
     def final_partida(self, victoria):
         files = self.configuracio["tauler"]["files"]
         columnes = self.configuracio["tauler"]["columnes"]
+        self.inici_partida = None
         # Mostrem les bombes restants
         for i in range(files):
             for j in range(columnes):
@@ -118,7 +143,7 @@ class Buscamines:
                 if casella.te_mina:
                     casella.bomba()
         if victoria: # TO DO : definir mida pantalla i limitar a 10 caracters !!!!!
-            durada = round(time.time() - self.inici_partida,2)
+            durada = self.text_temps
             nom = simpledialog.askstring("Felicitats!", f"Has guanyat en {durada} segons!\nIntrodueix el teu nom:")
             if nom:  # Si ha escrit algun nom guardem
                 self.registrar_temps(nom, durada)
@@ -169,4 +194,5 @@ class Buscamines:
         self.tauler.clear()
         self.caselles_obertes = 0
         self.inici_partida = None
+        self.actualitzar_etiqueta_temps(self.temps_parat)
         self.crear_tauler()
