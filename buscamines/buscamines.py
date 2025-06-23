@@ -19,6 +19,7 @@ class Buscamines:
         self.tauler: List[List[Casella]] = [] # Indiquem el tipus de l atribut tauler
         self.caselles_obertes = 0
         self.inici_partida = None
+        self.partida_finalitzada = False
         self.text_prefix = "Temps: "
         self.text_suffix = " s"
         self.temps_parat = 0.00
@@ -106,7 +107,7 @@ class Buscamines:
                 if casella.adjacents == 0:
                     for x, y in self.adjacents(i, j):
                         self.revelar(x, y, True)
-            if self.caselles_obertes == self.caselles_sense_bomba():
+            if self.caselles_obertes == self.caselles_sense_bomba() and not self.partida_finalitzada:
                 self.final_partida(True)
 
     def marcar(self, i, j): # Marcar com a possible bomba
@@ -168,21 +169,23 @@ class Buscamines:
         finestra.grab_set()
 
     def final_partida(self, victoria):
-        files = self.configuracio["tauler"]["files"]
-        columnes = self.configuracio["tauler"]["columnes"]
-        self.inici_partida = None
-        # Mostrem les bombes restants
-        for i in range(files):
-            for j in range(columnes):
-                casella = self.tauler[i][j]
-                if casella.te_mina:
-                    casella.bomba()
-        if victoria:
-            self.demanar_info(self.text_temps)
-        else:
-            missatge="Has perdut!"
-            messagebox.showinfo("Buscamines", missatge)
-            self.reiniciar()
+        if not self.partida_finalitzada:
+            self.partida_finalitzada = True
+            files = self.configuracio["tauler"]["files"]
+            columnes = self.configuracio["tauler"]["columnes"]
+            self.inici_partida = None
+            # Mostrem les bombes restants
+            for i in range(files):
+                for j in range(columnes):
+                    casella = self.tauler[i][j]
+                    if casella.te_mina:
+                        casella.bomba()
+            if victoria:
+                self.demanar_info(self.text_temps)
+            else:
+                missatge="Has perdut!"
+                messagebox.showinfo("Buscamines", missatge)
+                self.reiniciar()
 
     def registrar_temps(self, nom, temps):
         # Si nom buit o nomes espais posem "Jugador misteriós"
@@ -228,5 +231,6 @@ class Buscamines:
         self.tauler.clear()
         self.caselles_obertes = 0
         self.inici_partida = None
+        self.partida_finalitzada = False
         self.actualitzar_etiqueta_temps(self.temps_parat)
         self.crear_tauler()
