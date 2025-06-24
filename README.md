@@ -61,7 +61,7 @@ L'executable es generarà a la carpeta `dist/`.
 - Disseny gràfic personalitzat amb emojis
 - Marcatge amb clic dret
 - Revelació automàtica de caselles
-- Guardat i visualització de puntuacions amb nom i temps
+- Guardat i visualització de puntuacions amb nom, temps i data/hora
 
 ## ⏱️ API de puntuacions
 
@@ -75,6 +75,14 @@ url = "https://sheetdb.io/api/v1/77zmp0nhr00bh"
 
 ![Captura del joc](GUI.png)
 
+## 🚧 TODO
+
+🛠️ Estructura i codi
+
+- Creació de la **classe Tauler** separada de la classe Buscamines
+
+- **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views, controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
+
 ## 📝 Llicència
 
-Aquest projecte està disponible sota la llicència MIT: lliure d'ús, còpia i modificació amb crèdit a l'autoria original.
+Aquest projecte està disponible sota la llicència MIT: lliure d'ús, còpia i modificació amb crèdit a l'autor.
