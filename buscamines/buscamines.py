@@ -143,16 +143,14 @@ class Buscamines:
         def en_tancar():
             self.reiniciar()
             finestra.destroy()
-
         finestra.protocol("WM_DELETE_WINDOW", en_tancar)
 
         tk.Label(finestra, text=f"Has guanyat en {durada} segons!", font=("Arial", 11)).pack(pady=5)
         tk.Label(finestra, text="Introdueix el teu nom (màx. 15 caràcters):", font=("Arial", 10)).pack()
 
-        # Funció de validació per limitar a 15 caracters
+        # Funcio de validacio per limitar a 15 caracters
         def validar_input(nou_text):
             return len(nou_text) <= 15
-
         vcmd = (finestra.register(validar_input), "%P")
 
         entrada = tk.Entry(finestra, font=("Arial", 10), validate="key", validatecommand=vcmd)
@@ -205,21 +203,17 @@ class Buscamines:
 
     def resultats(self):
         resposta = requests.get(url)
-
         if resposta.status_code == 200:
             dades = resposta.json()
-
             # Filtra per registres amb temps i ordena per temps ascendent
             dades_valides = [f for f in dades if f.get("temps") and f["temps"].replace(".", "", 1).isdigit()]
             dades_ordenades = sorted(dades_valides, key=lambda fila: float(fila["temps"]))
-
             # Crear finestra
             finestra = tk.Toplevel()
             finestra.title("Millors temps")
             finestra.geometry("300x300")
             finestra.resizable(False, False)
             tk.Label(finestra, text="🏆    TOP 10    🏆", font=("Arial", 12, "bold")).pack(pady=10)
-
             # Top 10
             for idx, fila in enumerate(dades_ordenades[:10], start=1):
                 jugador = fila.get("jugador", "Anònim")
