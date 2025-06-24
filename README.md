@@ -16,18 +16,21 @@ buscamines/
 icon/
 └── bomba.ico        # Icona per a l'executable
 .gitignore
+requirements.txt
 exe-requirements.txt
 ```
 
 ## ▶️ Requisits
 
 - Python 3.10+
-- Dependències per crear executable definides a `exe-requirements.txt`
-- Connexió a internet (per desar i recuperar puntuacions)
+- Dependències per **executar** el joc definides a `requirements.txt`
+- Dependències per **crear executable** definides a `exe-requirements.txt`
+- Connexió a internet per desar i recuperar puntuacions
 
 ## 🎮 Executar el joc
 
 ```bash
+pip install -r requirements.txt
 python main.py
 ```
 
@@ -35,7 +38,7 @@ python main.py
 
 Pots crear una versió executable per a Windows utilitzant `pyinstaller`.
 
-### 1. Instal·la les dependències de desenvolupament
+### 1. Instal·la les dependències de d'execució
 
 ```bash
 pip install -r exe-requirements.txt
