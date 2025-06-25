@@ -1,4 +1,4 @@
-# 💣 Buscamines 💣
+# 💣💣💣💣 Buscamines 💣💣💣💣
 
 Projecte desenvolupat amb Python i Tkinter que reimplementa el clàssic joc del **Buscamines**:
 Aplicació gràfica interactiva on has de descobrir cel·les sense explotar les mines.
@@ -55,6 +55,10 @@ pyinstaller --onefile --windowed --name=Buscamines --icon=icon/bomba.ico --add-d
 ```
 
 L'executable es generarà a la carpeta `dist/`.
+
+Sinó pots descarregar la versió 1.0 des d'aquí:
+
+[⬇️ Descarrega Buscamines v1.0](https://github.com/xbaubes/Buscamines/releases/download/v1.0/Buscamines.exe)
 
 ## 🕹️ Funcionalitats
 
