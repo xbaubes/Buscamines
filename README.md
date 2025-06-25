@@ -48,8 +48,10 @@ pip install -r exe-requirements.txt
 
 Assegura’t que el fitxer `bomba.ico` és a la carpeta `../icon/`.
 
+Des de l'arrel del projecte introdueix:
+
 ```bash
-pyinstaller --onefile --windowed --name=Buscamines --icon=../icon/bomba.ico main.py --clean
+pyinstaller --onefile --windowed --name=Buscamines --icon=icon/bomba.ico --add-data "icon/bomba.ico;icon" buscamines/main.py
 ```
 
 L'executable es generarà a la carpeta `dist/`.
