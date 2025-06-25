@@ -16,18 +16,21 @@ buscamines/
 icon/
 └── bomba.ico        # Icona per a l'executable
 .gitignore
+requirements.txt
 exe-requirements.txt
 ```
 
 ## ▶️ Requisits
 
 - Python 3.10+
-- Dependències per crear executable definides a `exe-requirements.txt`
-- Connexió a internet (per desar i recuperar puntuacions)
+- Dependències per **executar** el joc definides a `requirements.txt`
+- Dependències per **crear executable** definides a `exe-requirements.txt`
+- Connexió a internet per desar i recuperar puntuacions
 
 ## 🎮 Executar el joc
 
 ```bash
+pip install -r requirements.txt
 python main.py
 ```
 
@@ -35,7 +38,7 @@ python main.py
 
 Pots crear una versió executable per a Windows utilitzant `pyinstaller`.
 
-### 1. Instal·la les dependències de desenvolupament
+### 1. Instal·la les dependències de d'execució
 
 ```bash
 pip install -r exe-requirements.txt
@@ -45,8 +48,10 @@ pip install -r exe-requirements.txt
 
 Assegura’t que el fitxer `bomba.ico` és a la carpeta `../icon/`.
 
+Des de l'arrel del projecte introdueix:
+
 ```bash
-pyinstaller --onefile --windowed --name=Buscamines --icon=../icon/bomba.ico main.py --clean
+pyinstaller --onefile --windowed --name=Buscamines --icon=icon/bomba.ico --add-data "icon/bomba.ico;icon" buscamines/main.py
 ```
 
 L'executable es generarà a la carpeta `dist/`.
@@ -58,7 +63,7 @@ L'executable es generarà a la carpeta `dist/`.
 - Disseny gràfic personalitzat amb emojis
 - Marcatge amb clic dret
 - Revelació automàtica de caselles
-- Guardat i visualització de puntuacions amb nom i temps
+- Guardat i visualització de puntuacions amb nom, temps i data/hora
 
 ## ⏱️ API de puntuacions
 
@@ -72,6 +77,14 @@ url = "https://sheetdb.io/api/v1/77zmp0nhr00bh"
 
 ![Captura del joc](GUI.png)
 
+## 🚧 TODO
+
+🛠️ Estructura i codi
+
+- Creació de la **classe Tauler** separada de la classe Buscamines
+
+- **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views, controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
+
 ## 📝 Llicència
 
-Aquest projecte està disponible sota la llicència MIT: lliure d'ús, còpia i modificació amb crèdit a l'autoria original.
+Aquest projecte està disponible sota la llicència MIT: lliure d'ús, còpia i modificació amb crèdit a l'autor.
