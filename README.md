@@ -85,8 +85,6 @@ url = "https://sheetdb.io/api/v1/77zmp0nhr00bh"
 
 🛠️ Estructura i codi
 
-- Creació de la **classe Tauler** separada de la classe Buscamines
-
 - **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views, controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
 
 ## 📝 Llicència
