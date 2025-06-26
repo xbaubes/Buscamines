@@ -13,10 +13,7 @@ class Buscamines:
     def __init__(self, master, configuracio): # Constructor de Buscamines
         self.master = master
         self.configuracio = configuracio
-        self.tauler = Tauler(master,
-                             configuracio,
-                             self.valida_marcat,
-                             self.marcar) # 2 Callbacks: Li passem 2 funcions com a parametres
+        self.tauler = self.crear_tauler(master, configuracio)
         self.caselles_obertes = 0
         self.inici_partida = None
         self.partida_finalitzada = False
@@ -27,6 +24,12 @@ class Buscamines:
                                        text=f"{self.text_prefix}{self.temps_parat:.2f}{self.text_suffix}",
                                        font=("Arial", 12))
         self.etiqueta_temps.grid(row=self.configuracio["tauler"]["files"], column=0, columnspan=self.configuracio["tauler"]["columnes"], pady=5)
+
+    def crear_tauler(self, master, configuracio):
+        return Tauler(master,
+                      configuracio,
+                      self.valida_marcat,
+                      self.marcar) # 2 Callbacks: Li passem 2 funcions com a parametres
 
     # Retornant break evita l efecte visual de fer click al boto en cas que no estigui permes
     def valida_marcat(self, event, i, j):
@@ -170,4 +173,4 @@ class Buscamines:
         self.inici_partida = None
         self.partida_finalitzada = False
         self.actualitzar_etiqueta_temps(self.temps_parat)
-        self.tauler = Tauler(self.master, self.configuracio, self.valida_marcat, self.marcar)
+        self.tauler = self.crear_tauler(self.master, self.configuracio)
