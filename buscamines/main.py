@@ -2,7 +2,7 @@ from tkinter import Tk
 import os
 import sys
 
-from config import CONFIGURACIO
+from config import CONFIGURACIO, LITERALS
 from buscamines import Buscamines
 
 def resource_path(rel_path): # Aconsegueix el path absolut tant en .py com en .exe
@@ -21,5 +21,5 @@ if __name__ == "__main__": # Executa el codi nomes si el fitxer s executa direct
     if os.path.exists(ruta_icona):
         root.iconbitmap(ruta_icona)
 
-    Buscamines(root, CONFIGURACIO)
+    Buscamines(root, CONFIGURACIO, LITERALS)
     root.mainloop()

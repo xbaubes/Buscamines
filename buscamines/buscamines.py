@@ -10,9 +10,10 @@ from api import url
 class Buscamines:
     """Classe que crea el tauler del joc Buscamines i gestiona la partida."""
 
-    def __init__(self, master, configuracio): # Constructor de Buscamines
+    def __init__(self, master, configuracio, literals): # Constructor de Buscamines
         self.master = master
         self.configuracio = configuracio
+        self.literals = literals
         self.tauler = self.crear_tauler(master, configuracio)
         self.caselles_obertes = 0
         self.inici_partida = None
@@ -22,8 +23,11 @@ class Buscamines:
         self.temps_parat = 0.00
         self.etiqueta_temps = tk.Label(self.master,
                                        text=f"{self.text_prefix}{self.temps_parat:.2f}{self.text_suffix}",
-                                       font=("Arial", 12))
-        self.etiqueta_temps.grid(row=self.configuracio["tauler"]["files"], column=0, columnspan=self.configuracio["tauler"]["columnes"], pady=5)
+                                       font=self.configuracio["tauler"]["font_temps"])
+        self.etiqueta_temps.grid(row=self.configuracio["tauler"]["files"],
+                                 column=0,
+                                 columnspan=self.configuracio["tauler"]["columnes"],
+                                 pady=5)
 
     def crear_tauler(self, master, configuracio):
         return Tauler(master,
@@ -81,7 +85,7 @@ class Buscamines:
 
     def demanar_info(self, durada):
         finestra = tk.Toplevel()
-        finestra.title("Felicitats!")
+        finestra.title(self.literals["victoria"])
         finestra.geometry("300x130")
         finestra.resizable(False, False)
 
@@ -126,12 +130,12 @@ class Buscamines:
             if victoria:
                 self.demanar_info(self.text_temps)
             else:
-                messagebox.showinfo("Buscamines", "Has perdut!")
+                messagebox.showinfo("Buscamines", self.literals["derrota"])
                 self.reiniciar()
 
     def registrar_temps(self, nom, temps):
-        # Si nom buit o nomes espais posem "Jugador misteriós"
-        nom = nom.strip() or "Jugador misteriós"
+        # Si nom buit o nomes espais posem nom per defecte
+        nom = nom.strip() or self.literals["jugador_misterios"]
         # Dades a afegir, camps "jugador", "temps" i "data_hora"
         dades = {
             "data": {
@@ -154,16 +158,16 @@ class Buscamines:
             dades_ordenades = sorted(dades_valides, key=lambda fila: float(fila["temps"]))
             # Crear finestra
             finestra = tk.Toplevel()
-            finestra.title("Millors temps")
+            finestra.title(self.literals["millors_temps"])
             finestra.geometry("300x300")
             finestra.resizable(False, False)
-            tk.Label(finestra, text="🏆    TOP 10    🏆", font=("Arial", 12, "bold")).pack(pady=10)
+            tk.Label(finestra, text="🏆    TOP 10    🏆", font=self.configuracio["tauler"]["font_top"]).pack(pady=10)
             # Top 10
             for idx, fila in enumerate(dades_ordenades[:10], start=1):
-                jugador = fila.get("jugador", "Anònim")
+                jugador = fila.get("jugador", self.literals["jugador_misterios"])
                 temps = fila.get("temps")
                 text = f"{idx}. {jugador} - {temps} s"
-                tk.Label(finestra, text=text, font=("Arial", 10)).pack(anchor="w", padx=20)
+                tk.Label(finestra, text=text, font=self.configuracio["tauler"]["font"]).pack(anchor="w", padx=20)
 
     def reiniciar(self): # Elimina la partida actual i preparar ne una de nova
         for fila in self.tauler.tauler:

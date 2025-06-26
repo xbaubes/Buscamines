@@ -3,7 +3,10 @@ CONFIGURACIO = {
     "tauler": {
         "files": 8,
         "columnes": 8,
-        "mines": 8
+        "mines": 8,
+        "font": ("Arial", 10),
+        "font_temps": ("Arial", 12),
+        "font_top": ("Arial", 12, "bold")
     },
     "cella": {
         "amplada": 3,
@@ -21,4 +24,11 @@ CONFIGURACIO = {
             "defecte": "black"
         }
     }
+}
+
+LITERALS = {
+    "victoria": "Felicitats!",
+    "derrota": "Has perdut!",
+    "millors_temps": "Millors temps",
+    "jugador_misterios": "Jugador misteriós"
 }
