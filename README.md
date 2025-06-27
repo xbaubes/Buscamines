@@ -2,6 +2,7 @@
 
 Projecte desenvolupat amb Python i Tkinter que reimplementa el clàssic joc del **Buscamines**:
 Aplicació gràfica interactiva on has de descobrir cel·les sense explotar les mines.
+
 Inclou registre de puntuacions mitjançant l'API de [SheetDB](https://sheetdb.io).
 
 ## 📦 Estructura del projecte
@@ -22,7 +23,7 @@ exe-requirements.txt
 
 ## ▶️ Requisits
 
-- Python 3.10+
+- Python 3.13+
 - Dependències per **executar** el joc definides a `requirements.txt`
 - Dependències per **crear executable** definides a `exe-requirements.txt`
 - Connexió a internet per desar i recuperar puntuacions
@@ -56,25 +57,25 @@ pyinstaller --onefile --windowed --name=Buscamines --icon=icon/bomba.ico --add-d
 
 L'executable es generarà a la carpeta `dist/`.
 
-Sinó pots descarregar la versió 1.0 des d'aquí:
+També pots descarregar la última versió des d'aquí:
 
-[⬇️ Descarrega Buscamines v1.0](https://github.com/xbaubes/Buscamines/releases/download/v1.0/Buscamines.exe)
+[⬇️ Descarrega Buscamines](https://github.com/xbaubes/Buscamines/releases/download/v1.0/Buscamines.exe)
 
 ## 🕹️ Funcionalitats
 
 - Tauler configurable (files, columnes, mines)
-- Control de temps i classificació TOP 10
+- Control de temps i visualització del TOP 10 de puntuacions amb nom i temps
 - Disseny gràfic personalitzat amb emojis
-- Marcatge amb clic dret
-- Revelació automàtica de caselles
-- Guardat i visualització de puntuacions amb nom, temps i data/hora
+- Marcatge de casella sospitosa de tenir una bomba amb clic dret
+- Revelació automàtica de les caselles que no tenen bombes adjacents
+- Al finalitzar la partida se n'inicia automàticament una de nova
 
 ## ⏱️ API de puntuacions
 
 Aquest projecte utilitza una API proporcionada per [SheetDB](https://sheetdb.io) per desar i obtenir els millors temps:
 
 ```python
-url = "https://sheetdb.io/api/v1/77zmp0nhr00bh"
+https://sheetdb.io/api/v1/77zmp0nhr00bh
 ```
 
 ## 📸 Captura
