@@ -37,7 +37,7 @@ python main.py
 
 ## 🗃️ Crear executable
 
-Pots crear una versió executable per a Windows utilitzant `pyinstaller`.
+Un cop el joc és executable, pots crear un fitxer executable per a Windows utilitzant `pyinstaller`.
 
 ### 1. Instal·la les dependències de d'execució
 
