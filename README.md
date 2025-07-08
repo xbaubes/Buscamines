@@ -1,7 +1,7 @@
 # 💣💣💣💣 Buscamines 💣💣💣💣
 
-Projecte desenvolupat amb Python i Tkinter que reimplementa el clàssic joc del **Buscamines**:
-Aplicació gràfica interactiva on has de descobrir cel·les sense explotar les mines.
+Aplicació gràfica interactiva desenvolupada amb Python i Tkinter que reimplementa el clàssic joc del **Buscamines**:
+Has de descobrir totes les cel·les sense explotar cap de les mines.
 
 Inclou registre de puntuacions mitjançant l'API de [SheetDB](https://sheetdb.io).
 
@@ -15,7 +15,7 @@ buscamines/
 ├── config.py            # Configuració de l'aparença i el joc
 └── api.py               # URL de l'API SheetDB
 icon/
-└── bomba.ico        # Icona per a l'executable
+└── bomba.ico            # Icona per a l'executable
 .gitignore
 requirements.txt
 exe-requirements.txt
@@ -39,15 +39,13 @@ python main.py
 
 Un cop el joc és executable, pots crear un fitxer executable per a Windows utilitzant `pyinstaller`.
 
-### 1. Instal·la les dependències de d'execució
+### 1. Instal·la les dependències
 
 ```bash
 pip install -r exe-requirements.txt
 ```
 
 ### 2. Genera l'executable
-
-Assegura’t que el fitxer `bomba.ico` és a la carpeta `../icon/`.
 
 Des de l'arrel del projecte introdueix:
 
@@ -63,11 +61,10 @@ També pots descarregar la última versió des d'aquí:
 
 ## 🕹️ Funcionalitats
 
-- Tauler configurable (files, columnes, mines)
-- Control de temps i visualització del TOP 10 de puntuacions amb nom i temps
 - Disseny gràfic personalitzat amb emojis
 - Marcatge de casella sospitosa de tenir una bomba amb clic dret
 - Revelació automàtica de les caselles que no tenen bombes adjacents
+- Control de temps i visualització del TOP 10 de puntuacions amb nom i temps
 - Al finalitzar la partida se n'inicia automàticament una de nova
 
 ## ⏱️ API de puntuacions
@@ -86,8 +83,8 @@ https://sheetdb.io/api/v1/77zmp0nhr00bh
 
 🛠️ Estructura i codi
 
-- **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views, controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
+- **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views i controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
 
 ## 📝 Llicència
 
-Aquest projecte està disponible sota la llicència MIT: lliure d'ús, còpia i modificació amb crèdit a l'autor.
+Aquest projecte està disponible sota la llicència MIT: Lliure d'ús, còpia i modificació amb crèdit a l'autor.
