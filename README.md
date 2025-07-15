@@ -85,6 +85,10 @@ https://sheetdb.io/api/v1/77zmp0nhr00bh
 
 - **Separació MVC**: Actualment la lògica i la GUI estan entrellaçades. Reorganització modular separant clarament models, views i controllers. Això permetria reutilitzar la lògica per fer una versió web amb Flask
 
+🔐 Seguretat
+
+- **Migració API**: Actualment tan el GET com el POST de puntuacions són públics, el POST hauria de requerir autenticació. Passar de SheetDB a Google Apps Script per implementar un control més flexible i personalitzat dels permisos de cada endpoint
+
 ## 📝 Llicència
 
 Aquest projecte està disponible sota la llicència MIT: Lliure d'ús, còpia i modificació amb crèdit a l'autor.
